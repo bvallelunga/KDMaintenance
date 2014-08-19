@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png">
+  <link rel="shortcut icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png">
+  <title>We'll Be Up Soon</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!--[if IE]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <style>
+    body {
+      background: black;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    iframe {
+      position: fixed;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      opacity: 0;
+    }
+
+    .side-logo {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 3;
+      width: 50px;
+      height: 50px;
+      opacity: 0;
+      overflow: hidden;
+
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+
+      -webkit-transition: opacity .5s ease 0;
+      -moz-transition: opacity .5s ease;
+      -o-transition: opacity .5s ease 0;
+      transition: opacity .5s ease 0;
+    }
+
+    .side-logo img {
+      width: 50px;
+      height: 50px;
+    }
+
+    body.active .side-logo {
+      opacity: 1;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      text-align: center;
+
+      -webkit-transition: opacity .5s ease 0;
+      -moz-transition: opacity .5s ease;
+      -o-transition: opacity .5s ease 0;
+      transition: opacity .5s ease 0;
+    }
+
+    body.active .modal {
+      opacity: 0;
+    }
+
+    .modal .logo {
+      width: 100px;
+      height: 100px;
+      margin: 150px auto 0 auto;
+      overflow: hidden;
+
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+
+    .modal .logo img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .modal .message {
+      color: #fff;
+      font-size: 52px;
+      margin-top: 40px;
+      font-family: "Helvetica Neue";
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8)
+    }
+
+    .modal .message a {
+      color: #5ec0ed;
+      text-decoration: none;
+    }
+
+    .modal .message a:hover {
+      text-decoration: underline;
+    }
+
+    .popup {
+      position: absolute;
+      z-index: 3;
+      top: 20px;
+      right: -300px;
+      color: #fff;
+      font-size: 22px;
+      padding: 12px 15px;
+      background: RGBA(1, 174, 90, 0.8);
+      font-family: "Helvetica Neue";
+      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+      opacity: 0;
+      text-decoration: none;
+      border: solid 2px rgba(0, 0, 0, 0.15);
+      border-right: none;
+
+      -webkit-border-radius: 2px 0 0 2px;
+      -moz-border-radius: 2px 0 0 2px;
+      border-radius: 2px 0 0 2px;
+
+      -webkit-transition: background .2s ease 0;
+      -moz-transition: background .2s ease;
+      -o-transition: background .2s ease 0;
+      transition: background .2s ease 0;
+    }
+
+    .popup:hover {
+      background: RGBA(19, 147, 86, 0.8);
+    }
+
+    .popup:hover:active {
+      background: RGBA(17, 132, 77, 0.8);
+    }
+
+  </style>
+  <script src="//code.jquery.com/jquery-2.1.0.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function() {
+      $("iframe").load(function() {
+        $("iframe").animate({
+          "opacity": 1
+        }, 500)
+
+        setTimeout(function() {
+          $("body").addClass("active")
+
+          setTimeout(function() {
+            $(".modal").remove()
+          }, 600)
+        }, 5000)
+      })
+    })
+
+    function KodingChecker(options) {
+      if (typeof options != "object")
+        options = {}
+
+      this.checkURL = options.url;
+      this.checkDuration = options.duration || 1000;
+      this.callback = options.callback || function () {};
+    }
+
+    KodingChecker.prototype.startChecking = function () {
+      var request = function () {
+        $.get(this.checkURL, this.onCheck.bind(this));
+      }.bind(this);
+
+      this._checker = setInterval(request, this.checkDuration);
+      request();
+    };
+
+    KodingChecker.prototype.stopChecking = function () {
+      clearInterval(this._checker);
+    };
+
+    KodingChecker.prototype.onCheck = function (response, status, xhr) {
+      this.callback(response.toLowerCase() != "ok", status, xhr);
+    };
+
+    (function (KC, redirectionTimer) {
+      // Usage
+      var checker = new KC({
+        url: "/-/presence/something/",
+        //url: "/index.html",
+        callback: function (isUp) {
+          console.log("ping koding...");
+
+          if (isUp) {
+            console.log("koding is up!");
+            checker.stopChecking()
+
+            $(".popup").animate({
+              right: 0,
+              opacity: 1
+            }, 500);
+          }
+        }
+      });
+
+      checker.startChecking();
+    })(KodingChecker, null);
+  </script>
+</head>
+<body>
+  <iframe src="http://hexgl.bkcore.com/play/"></iframe>
+  <a class="side-logo" href="https://koding.com">
+    <img src="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png"/>
+  </a>
+  <div class="modal">
+    <div class="logo">
+      <img src="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png"/>
+    </div>
+    <div class="message">
+      We're down, but you don't have to be :)
+      <br>
+      We will tell you when we're back up!
+      <br>
+      Play HexGL Racer by <a target="_blank" href="http://bkcore.com/">BKCore</a>
+    </div>
+  </div>
+  <a href="http://koding.com" class="popup">Koding is back up!</a>
+</body>
+</html>
