@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
   <meta charset="utf-8">
-  <link rel="shortcut icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png">
-  <link rel="shortcut icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png">
   <title>We'll Be Up Soon</title>
+  <link rel="shortcut icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png">
+  <link rel="fluid-icon" href="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png" title="Koding">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <!--[if IE]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -194,14 +194,13 @@
     };
 
     KodingChecker.prototype.onCheck = function (response, status, xhr) {
-      this.callback(response.toLowerCase() != "ok", status, xhr);
+      this.callback(response.toLowerCase() == "ok", status, xhr);
     };
 
     (function (KC, redirectionTimer) {
       // Usage
       var checker = new KC({
         url: "/-/presence/something/",
-        //url: "/index.html",
         callback: function (isUp) {
           console.log("ping koding...");
 
@@ -222,7 +221,7 @@
   </script>
 </head>
 <body>
-  <iframe src="http://hexgl.bkcore.com/play/"></iframe>
+  <iframe src="http://files.widgetbox.com/widgets/neave/neave_pacman_widgetbox.swf"></iframe>
   <a class="side-logo" href="https://koding.com">
     <img src="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png"/>
   </a>
@@ -235,7 +234,7 @@
       <br>
       We will tell you when we're back up!
       <br>
-      Play HexGL Racer by <a target="_blank" href="http://bkcore.com/">BKCore</a>
+      Play Pacman by <a target="_blank" href="http://blog.neave.com/about">Paul Neave</a>
     </div>
   </div>
   <a href="http://koding.com" class="popup">Koding is back up!</a>
