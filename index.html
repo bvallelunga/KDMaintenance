@@ -23,154 +23,87 @@
     iframe {
       position: fixed;
       z-index: 0;
-      top: 0;
+      top: 80px;
       left: 0;
       right: 0;
       bottom: 0;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 80px);
       border: none;
       outline: none;
-      opacity: 0;
     }
 
-    .side-logo {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 3;
-      width: 50px;
-      height: 50px;
-      opacity: 0;
-      overflow: hidden;
-
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-
-      -webkit-transition: opacity .5s ease 0;
-      -moz-transition: opacity .5s ease;
-      -o-transition: opacity .5s ease 0;
-      transition: opacity .5s ease 0;
-    }
-
-    .side-logo img {
-      width: 50px;
-      height: 50px;
-    }
-
-    body.active .side-logo {
-      opacity: 1;
-    }
-
-    .modal {
+    header {
       position: fixed;
       z-index: 1;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      text-align: center;
-
-      -webkit-transition: opacity .5s ease 0;
-      -moz-transition: opacity .5s ease;
-      -o-transition: opacity .5s ease 0;
-      transition: opacity .5s ease 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-bottom: solid 2px rgba(255, 255, 255, 0.05);
     }
 
-    body.active .modal {
-      opacity: 0;
-    }
-
-    .modal .logo {
-      width: 100px;
-      height: 100px;
-      margin: 150px auto 0 auto;
+    header .logo {
+      width: 60px;
+      height: 60px;
       overflow: hidden;
-
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
     }
 
-    .modal .logo img {
-      width: 100px;
-      height: 100px;
+    header .logo img {
+      width: 60px;
+      height: 60px;
     }
 
-    .modal .message {
-      color: #fff;
-      font-size: 52px;
-      margin-top: 40px;
+    header .content {
+      position: absolute;
+      z-index: 3;
+      top: 15px;
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
       font-family: "Helvetica Neue";
-      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8)
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5)
     }
 
-    .modal .message a {
+    header div.content {
+      color: #fff;
+    }
+
+    header a.content {
+      display: none;
+    }
+
+
+    body.online header a.content {
+      display: block;
+    }
+
+    body.online header div.content {
+      display: none;
+    }
+
+    header .attributes {
+      position: absolute;
+      z-index: 4;
+      top: 19px;
+      right: 15px;
+      color: #fff;
+      font-size: 18px;
+      font-family: "Helvetica Neue";
+    }
+
+    header a {
       color: #5ec0ed;
       text-decoration: none;
     }
 
-    .modal .message a:hover {
+    header a:hover {
       text-decoration: underline;
-    }
-
-    .popup {
-      position: absolute;
-      z-index: 3;
-      top: 20px;
-      right: -300px;
-      color: #fff;
-      font-size: 22px;
-      padding: 12px 15px;
-      background: RGBA(1, 174, 90, 0.8);
-      font-family: "Helvetica Neue";
-      text-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
-      opacity: 0;
-      text-decoration: none;
-      border: solid 2px rgba(0, 0, 0, 0.15);
-      border-right: none;
-
-      -webkit-border-radius: 2px 0 0 2px;
-      -moz-border-radius: 2px 0 0 2px;
-      border-radius: 2px 0 0 2px;
-
-      -webkit-transition: background .2s ease 0;
-      -moz-transition: background .2s ease;
-      -o-transition: background .2s ease 0;
-      transition: background .2s ease 0;
-    }
-
-    .popup:hover {
-      background: RGBA(19, 147, 86, 0.8);
-    }
-
-    .popup:hover:active {
-      background: RGBA(17, 132, 77, 0.8);
     }
 
   </style>
   <script src="//code.jquery.com/jquery-2.1.0.min.js" type="text/javascript"></script>
   <script type="text/javascript">
-    $(function() {
-      $("iframe").load(function() {
-        $("iframe").animate({
-          "opacity": 1
-        }, 500)
-
-        setTimeout(function() {
-          $("body").addClass("active")
-
-          setTimeout(function() {
-            $(".modal").remove()
-          }, 600)
-        }, 5000)
-      })
-    })
-
     function KodingChecker(options) {
       if (typeof options != "object")
         options = {}
@@ -207,11 +140,7 @@
           if (isUp) {
             console.log("koding is up!");
             checker.stopChecking()
-
-            $(".popup").animate({
-              right: 0,
-              opacity: 1
-            }, 500);
+            $("body").addClass("online")
           }
         }
       });
@@ -221,22 +150,16 @@
   </script>
 </head>
 <body>
-  <iframe src="http://files.widgetbox.com/widgets/neave/neave_pacman_widgetbox.swf"></iframe>
-  <a class="side-logo" href="https://koding.com">
-    <img src="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png"/>
-  </a>
-  <div class="modal">
+  <header>
     <div class="logo">
       <img src="http://upload.wikimedia.org/wikipedia/en/5/59/KodingLogoNew.png"/>
     </div>
-    <div class="message">
-      We're down, but you don't have to be :)
-      <br>
-      We will tell you when we're back up!
-      <br>
-      Play Pacman by <a target="_blank" href="http://blog.neave.com/about">Paul Neave</a>
+    <div class="content">We're down, but you don't have to be :)</div>
+    <a class="content" href="http://koding.com" class="popup">Koding is back up! Lets get back to work.</a>
+    <div class="attributes">
+      Pacman by <a target="_blank" href="http://blog.neave.com/about">Paul Neave
     </div>
-  </div>
-  <a href="http://koding.com" class="popup">Koding is back up!</a>
+  </header>
+  <iframe src="http://files.widgetbox.com/widgets/neave/neave_pacman_widgetbox.swf"></iframe>
 </body>
 </html>
